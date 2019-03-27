@@ -2,37 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
-using System.Net.Http;
+using System.Threading.Tasks;
 
-
-namespace ConsoleApp1
+namespace LearningAsyncAwayStart
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Downloading file");
+            Console.WriteLine("downloading file");
             Download();
             Console.ReadLine();
+
         }
-        static async void Download()
+
+        static void Download()
         {
-            HttpClient client = new HttpClient();
-            var data = await client.GetStringAsync("http://ibm.com");
-            Console.WriteLine("Download Complete" + data);
+            Network.Download((message) => Console.WriteLine("Download complete " + message));
         }
-
-
-
-
     }
+
+    // Imaginary external network library
+
     class Network
     {
-        static public Task Download()
+        static public void Download(Action<String> callback)
         {
-            return Task.Run(() => Thread.Sleep(3000));
+            Task.Run(() => {
+                Thread.Sleep(3000);
+                callback("completed");
+            });
         }
     }
 }
